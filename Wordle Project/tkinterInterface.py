@@ -1,7 +1,10 @@
+import threading
+import time
 import tkinter as tk
 from tkinter import *
 import pandas as pd
 import random
+import numpy as np
 from ComparisonFunction import matchScript
 import math
 
@@ -44,11 +47,10 @@ canvas.create_rectangle(0, 360, 500, 500, fill="#E1E1E1", outline="#E1E1E1")
 #finds the average score from a csv
 def averageScoreFinder():
     scoreList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv')
-    print(scoreList)
     scoreTotal = 0
     for x in scoreList:
-        scoreTotal = scoreTotal + float(x)
-    averageScore = scoreTotal / len(scoreList.columns)
+        scoreTotal = scoreTotal + float(x).__floor__()
+    averageScore = round((scoreTotal / len(scoreList.columns)), 2)
     canvas.create_text(400, 175, text=str(averageScore), fill='black', font='Helvetica 12 bold')
 
 
@@ -108,49 +110,61 @@ def buttonPress(solutionWord):
 guessBox = tk.Entry(root, width=10, font='Helvetica 20 bold')
 canvas.create_window(210, 430, window=guessBox)
 
-def playAgain(guessList):
+gameOver = False
+def playAgain():
+    global guessList
     with open(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv', 'a') as fd:
-        fd.write(',' + str(len(guessList)))
+        fd.write(r',' + str(len(guessList)))
+    print(str(len(guessList)))
     guessList = []
+    global solutionWord
     solutionWord = solutionWordList.words[random.randint(0, len(solutionWordList.words))]
+    global matchList
     matchList = []
     drawSquares()
-    buttonState()
+    buttonPress(solutionWord)
+    global gameOver
+    gameOver = False
 
 
 
 def wordGuesser():
-    guessWord = guessBox.get().lower()
-    for x in wordList.words:
-        if guessWord == x:
-            if len(guessList) <=5:
+    global gameOver
+    if not gameOver:
+        guessWord = guessBox.get().lower()
+        for x in wordList.words:
+            if guessWord == x:
                 guessList.append(guessWord)
                 var = 0
                 break
-    else:
-        var = 1
-    if var != 1:
-        matches = matchScript(guessWord, solutionWord)
-        if set(matches) == set([2,2,2,2,2]):
-            endButton = Button(canvas, text='Congrats! Click to Play Again.', command=lambda: [playAgain(guessList), endButton.pack_forget()], font='Helvetica 20 bold', fg='black', highlightcolor='black', highlightthickness=0, bg='Red')
-            endButton.pack()
-            endButton.place(x=250, y=250)
-        for x in matches:
-            matchList.append(x)
-        print("matches: {}  MatchList: {}".format(matches, matchList))
-        drawSquares(guessList, matchList)
+        else:
+            var = 1
+            guessButton.config(background='red')
+            print("h")
+            guessButton.after(500, lambda: guessButton.config(background='white'))
+        if var != 1:
+            matches = matchScript(guessWord, solutionWord)
+            if set(matches) == set([2,2,2,2,2]):
+                endButton = Button(canvas, text='Congrats! Click to Play Again.', command=lambda: [playAgain(), endButton.destroy()], font='Helvetica 20 bold', fg='black', highlightcolor='black', highlightthickness=0, bg='Red')
+                endButton.pack()
+                gameOver = True
+                endButton.place(x=50, y=250)
+            for x in matches:
+                matchList.append(x)
+            print("matches: {}  MatchList: {}".format(matches, matchList))
+            drawSquares(guessList, matchList)
 
 
-guessButton = tk.Button(canvas, text='Guess:', command=lambda: wordGuesser(), font='Helvetica 20 bold', fg='black', highlightcolor='black', highlightthickness=0)
+guessButton = Button(canvas, text='Guess:', command=lambda: [wordGuesser()], font='Helvetica 20 bold', fg='black', highlightbackground='black', highlightthickness=0, bg='white')
+guessButton.pack()
 guessButton.place(x=10, y=405)
 
-wordGuesser()
+
+
 solutionButton = Button(canvas, text='Reveal:', command= lambda: buttonPress(solutionWord), font='Helvetica 12 bold', fg='black', highlightcolor='black', highlightthickness=0)
 buttonPress(solutionWord)
 solutionButton.place(x=310, y=65)
 averageScoreFinder()
-
-
 
 canvas.pack(side="top", fill="both", expand="true")
 root.mainloop()
