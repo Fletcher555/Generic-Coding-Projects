@@ -8,7 +8,8 @@ from alive_progress import alive_bar
 
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-solutionWordList = pd.read_csv(r'C:\Users\fletc\Downloads\valid_solutions.csv')
+solutionWordList = pd.read_csv(
+    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
 
 solutionWord = 'guess'
 removedWordsList = []

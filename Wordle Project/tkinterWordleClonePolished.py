@@ -22,7 +22,8 @@ canvas = tk.Canvas(root, width=500, height=500, borderwidth=0, highlightthicknes
 
 # These pull lists of words that I have stored in the accompanying CSV's also selects the solution word.
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-solutionWordList = pd.read_csv(r'C:\Users\fletc\Downloads\valid_solutions.csv')
+solutionWordList = pd.read_csv(
+    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
 solutionWord = solutionWordList.words[random.randint(0, len(solutionWordList.words))]
 
 # Just defines some colors, these are the official colors Wordle uses

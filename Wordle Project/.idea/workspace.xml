@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="" />
+    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Score.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Webend/wordleHTML.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Word Download.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bestWordCalculatorBruteForce.py" beforeDir="false" afterPath="$PROJECT_DIR$/bestWordCalculatorBruteForce.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldComparisonFunction.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldMain.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/oldTest.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tkinterInterface.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tkinterWordleClonePolished.py" beforeDir="false" afterPath="$PROJECT_DIR$/tkinterWordleClonePolished.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +46,11 @@
     "last_opened_file_path": "C:/Users/fletc/Documents/GitHub/Generic-Coding-Projects/Wordle Project"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project" />
+    </key>
+  </component>
   <component name="RunManager" selected="Python.bestWordCalculatorBruteForce">
     <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Wordle Project" />
