@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tkinterInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/tkinterInterface.py" afterDir="false" />
-    </list>
+    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,10 +31,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true"
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "last_opened_file_path": "C:/Users/fletc/Documents/GitHub/Generic-Coding-Projects/Wordle Project"
   }
 }]]></component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.bestWordCalculatorBruteForce">
     <configuration name="Test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Wordle Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -53,6 +49,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="bestWordCalculatorBruteForce" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Wordle Project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bestWordCalculatorBruteForce.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -147,6 +164,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.bestWordCalculatorBruteForce" />
         <item itemvalue="Python.Test" />
         <item itemvalue="Python.tkinterWordleClonePolished" />
         <item itemvalue="Python.tkinterWordleClonePolished (1)" />

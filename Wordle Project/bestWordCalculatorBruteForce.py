@@ -11,9 +11,6 @@ wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects
 solutionWordList = pd.read_csv(r'C:\Users\fletc\Downloads\valid_solutions.csv')
 
 solutionWord = 'guess'
-counter = 0
-print(solutionWordList.words[1])
-var = len(wordList.words)
 removedWordsList = []
 
 
@@ -38,6 +35,7 @@ def functionThing():
         yield
 
 
-with alive_bar(var, force_tty=True) as bar:
+# Generates the progress bar that displays the progress of the system.
+with alive_bar(len(wordList.words), force_tty=True) as bar:
     for i in functionThing():
         bar()
