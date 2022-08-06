@@ -1,12 +1,8 @@
-import threading
-import time
 import tkinter as tk
 from tkinter import *
 import pandas as pd
 import random
-import numpy as np
-from ComparisonFunction import matchScript
-import math
+from tkinterWordleClonePolished import matchScript
 
 #TempVars
 currentGuess = 0 #row
