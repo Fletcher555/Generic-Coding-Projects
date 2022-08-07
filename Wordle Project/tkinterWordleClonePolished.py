@@ -1,4 +1,4 @@
-# When ran this program creates a clone of the game Wordle, it is the base so that when Programming I can create visual
+# When ran this program creates a clone of the game Wordle, it is the base so that when programming I can create visual
 # demonstrations of my future solvers.
 # Author: Fletcher Dares
 # Email: fletcher.dares@gmail.com
@@ -34,12 +34,13 @@ gray = '#787c7e'
 
 # Quick Function that finds the average Score from the csv
 def averageScoreFinder():
-    scoreList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv')
+    scoreList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv',
+                            header=None)
     scoreTotal = 0
-    for x in scoreList:
-        scoreTotal = scoreTotal + float(x).__floor__()
+    for x in scoreList.iloc[0]:
+        scoreTotal = scoreTotal + x
 
-    averageScore = round((scoreTotal / len(scoreList.columns)), 2)
+    averageScore = round((scoreTotal / len(scoreList.iloc[0])), 2)
     canvas.itemconfig(averageScoreText, text=averageScore)
 
 
