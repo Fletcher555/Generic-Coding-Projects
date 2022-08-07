@@ -16,7 +16,7 @@ solutionWordList = pd.read_csv(
     r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
 
 
-guessWord = 'weary'
+guessWord = 'guess'
 possibleMatchLists = getAllMatchLists(guessWord)
 wordCountList = []
 for possibleMatchList in possibleMatchLists:

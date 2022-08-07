@@ -1,15 +1,29 @@
-
+# Information bit calculator, this will calculate the # of words eliminated by having each different letter state
+# (gray, yellow, and green) in each of the different positions, using this we can then get the percentage of words
+# that this removes. Converting this into bits we can then rank every single combination based on its amount of
+# information, then by taking the odds of getting different letter states in each position i.e. odds of a gray 'p' in
+# position one.
+#
+#
+# After writing the code to do the above it will take aproximately 6 hours to run so in the meantime I am going to
+# try to learn how to get this work with multithreading.
+#
+# This is currently v2 which does the same process nearly twice as fast due to a bunch of optimizations
 
 import pandas as pd
 import math
 from alive_progress import alive_bar
 import numpy as np
-from timeit import default_timer as timer
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
 averageBitsList = []
 
 
+# These vars contain the list of all the words that are checked, this list is approximately 13000 words long.
+# The empty list declaration allows for the
+
+# This function finds all possible matchLists possible for the guessWord, it does this by iterating through the entire
+# wordlist and finding all unique matchLists.
 def getAllMatchLists(guessWord):
     possibleMatchLists = []
     for solutionWord in wordList.words:
@@ -19,6 +33,8 @@ def getAllMatchLists(guessWord):
     return possibleMatchLists
 
 
+# Same Match Script as before, takes a guessWord and solutionWord and outputs what their color combination would be
+# according to Wordle's color rules.
 def matchScript(guessWord, solutionWord):
     guessWordLetterCount = {x: 0 for x in guessWord}
 
@@ -36,11 +52,12 @@ def matchScript(guessWord, solutionWord):
     return matchList
 
 
+# This takes a guessWord a testWord and a matchList, it checks to see if with the matchList whether the testWord would
+# be a possible word with that matchList
 def isPossibleWord(testWord, matches, guessWord):
     for x in range(5):
         if matches[x] == 2 and guessWord[x] != testWord[x]:
             return False
-
         if matches[x] == 1:
             if guessWord[x] == testWord[x] or guessWord[x] not in testWord:
                 return False
@@ -49,22 +66,22 @@ def isPossibleWord(testWord, matches, guessWord):
                 for y in range(5):
                     if (matches[y] == 2 or matches[y] == 1) and guessWord[y] == guessWord[x]:
                         numLetterGreen += 1
-
                 if testWord.count(guessWord[x]) < numLetterGreen:
                     return False
-
         if matches[x] == 0:
             numLetterGreenYellow = 0
             for y in range(5):
                 if (matches[y] == 1 or matches[y] == 2) and guessWord[y] == guessWord[x]:
                     numLetterGreenYellow += 1
-
             if testWord.count(guessWord[x]) > numLetterGreenYellow:
                 return False
 
     return True
 
 
+# The way this works it tally's up the words that are still possible with each of the possible matchLists to get an
+# average amount of information provided by the word, taking this we can rank the words based on how many other words
+# they cut out.
 def bitCalculator(guessWord):
     possibleMatchLists = getAllMatchLists(guessWord)
     averageBits = 0
@@ -81,6 +98,7 @@ def bitCalculator(guessWord):
     return (averageBits)
 
 
+# Generates the progress bar to keep track of the 6h long program.
 averageBitsList = []
 
 def functionThing():
@@ -95,9 +113,7 @@ with alive_bar(len(wordList.words), force_tty=True) as bar:
     for i in functionThing():
         bar()
 
-
-
-
+# Creates a dataframe with a column of words and the corresponding number of bits of information they remove on average.
 dataFrame = pd.DataFrame({'WordList': wordList.words,
                           'AverageBitsFromWord': averageBitsList})
 
@@ -108,4 +124,3 @@ pd.set_option('expand_frame_repr', False)
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     print(dataFrame.sort_values(by=['NumberOfPossibleWords']))
-

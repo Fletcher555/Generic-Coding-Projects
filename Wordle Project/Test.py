@@ -1,18 +1,14 @@
+# Current attempt at speeding up the BestWordFinder code by optimizing data structures.
+# One function at a time I will try to optimize the speed at which it runs by optimizing the data structure.
 
 import pandas as pd
-from ComparisonFunction import matchScript
+import math
 from alive_progress import alive_bar
+from timeit import default_timer as timer
+import numpy as np
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+averageBitsList = []
 
 
-
-guessWord = 'weary'
-counter = 0
-for solutionWord in solutionWordList.words:
-    if solutionWord.count('s') > 1:
-        counter = counter + 1
-
-print(counter)
+print(type(wordList.words.to_numpy()))
