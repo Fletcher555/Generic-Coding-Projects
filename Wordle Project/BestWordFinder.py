@@ -1,6 +1,24 @@
+# Information bit calculator, this will calculate the # of words eliminated by having each different letter state
+# (gray, yellow, and green) in each of the different positions, using this we can then get the percentage of words
+# that this removes. Converting this into bits we can then rank every single combination based on its amount of
+# information, then by taking the odds of getting different letter states in each position i.e. odds of a gray 'p' in
+# position one.
+#
+#
+# After writing the code to do the above it will take aproximately 6 hours to run so in the meantime I am going to
+# try to learn how to get this work with multithreading.
+
 import pandas as pd
+import math
+from alive_progress import alive_bar
 import numpy as np
 
+wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+averageBitsList = []
+
+
+# These vars contain the list of all the words that are checked, this list is approximately 13000 words long.
+# The empty list declaration allows for the
 
 def getAllMatchLists(guessWord):
     possibleMatchLists = []
@@ -74,3 +92,36 @@ def isPossibleWord(testWord, matches, guessWord):
                 return False
 
     return True
+
+
+def functionThing():
+    for guessWord in wordList.words:
+        possibleMatchLists = getAllMatchLists(guessWord)
+        averageBits = 0
+        for possibleMatchList in possibleMatchLists:
+            counter = 0
+            for solutionWord in wordList.words:
+                validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
+                if validWord:
+                    counter += 1
+            averageBits = averageBits + (
+                        (counter / len(wordList.words)) * (math.log((len(wordList.words) / counter), 2)))
+            # Formula for this part above is Sum of ( x / total * log2(total/x)
+        averageBitsList.append(averageBits)
+        yield
+
+
+with alive_bar(len(wordList.words), force_tty=True) as bar:
+    for i in functionThing():
+        bar()
+
+dataFrame = pd.DataFrame({'WordList': wordList.words,
+                          'AverageBitsFromWord': averageBitsList})
+
+dataFrame.to_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\averageWordScores.csv')
+
+pd.set_option('expand_frame_repr', False)
+
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(dataFrame.sort_values(by=['NumberOfPossibleWords']))
+

@@ -27,11 +27,6 @@ for possibleMatchList in possibleMatchLists:
             counter += 1
     wordCountList.append(counter)
 
-counter = 0
-for x in wordCountList:
-    counter = counter + x
-print(counter)
-
 probabilityList = []
 for possibleWord in wordCountList:
     probabilityList.append(possibleWord / len(wordList.words))
