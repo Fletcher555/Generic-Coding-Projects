@@ -11,4 +11,4 @@ wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects
 averageBitsList = []
 
 
-print(type(wordList.words.to_numpy()))
+print(len(wordList.words.to_numpy()))

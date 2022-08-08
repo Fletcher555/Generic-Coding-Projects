@@ -1,4 +1,5 @@
-
+# Notes all ranges are set to 5 or 12972 because that is the length of a 5 letter word and the number of 5 letter words
+# in the list i have
 
 import pandas as pd
 import math
@@ -7,15 +8,16 @@ import numpy as np
 from timeit import default_timer as timer
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+words = wordList.words.to_numpy()
 averageBitsList = []
 
 
 def getAllMatchLists(guessWord):
-    possibleMatchLists = []
-    for solutionWord in wordList.words:
+    possibleMatchLists = tuple()
+    for solutionWord in words:
         matches = matchScript(guessWord, solutionWord)
         if list(matches) not in possibleMatchLists:
-            possibleMatchLists.append(matches)
+            possibleMatchLists += (list(matches),)
     return possibleMatchLists
 
 
@@ -65,40 +67,37 @@ def isPossibleWord(testWord, matches, guessWord):
     return True
 
 
-def bitCalculator(guessWord):
-    possibleMatchLists = getAllMatchLists(guessWord)
-    averageBits = 0
-    for possibleMatchList in possibleMatchLists:
-        counter = 0
-        for solutionWord in wordList.words:
-            # noinspection PyTypeChecker
-            validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
-            if validWord:
-                counter += 1
-        averageBits = averageBits + (
-                (counter / len(wordList.words)) * (math.log((len(wordList.words) / counter), 2)))
-        # Formula for this part above is Sum of ( x / total * log2(total/x)
-    return (averageBits)
 
+averageBitsList = np.empty([])
 
-averageBitsList = []
 
 def functionThing():
-    for guessWord in wordList.words:
-        average = bitCalculator(guessWord)
-        print("Current guessWord: {}  Average Bits word provides: {}".format(guessWord, average))
-        averageBitsList.append(average)
+    for guessWord in words:
+        possibleMatchLists = getAllMatchLists(guessWord)
+        averageBits = 0
+        for possibleMatchList in possibleMatchLists:
+            counter = 0
+            for solutionWord in words:
+                # noinspection PyTypeChecker
+                validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
+                if validWord:
+                    counter += 1
+            averageBits = averageBits + (
+                    (counter / 12972) * (math.log((12972 / counter), 2)))
+            # Formula for this part above is Sum of ( x / total * log2(total/x)
+        print("Current guessWord: {}  Average Bits word provides: {}".format(guessWord, averageBits))
+        np.append(averageBitsList, averageBits)
         yield
 
 
-with alive_bar(len(wordList.words), force_tty=True) as bar:
+with alive_bar(12972, force_tty=True) as bar:
     for i in functionThing():
         bar()
 
 
 
 
-dataFrame = pd.DataFrame({'WordList': wordList.words,
+dataFrame = pd.DataFrame({'WordList': words,
                           'AverageBitsFromWord': averageBitsList})
 
 # Writes that dataframe to a CSV file for later use

@@ -16,6 +16,7 @@ from alive_progress import alive_bar
 import numpy as np
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+words = wordList.words.to_numpy()
 averageBitsList = []
 
 
@@ -25,11 +26,11 @@ averageBitsList = []
 # This function finds all possible matchLists possible for the guessWord, it does this by iterating through the entire
 # wordlist and finding all unique matchLists.
 def getAllMatchLists(guessWord):
-    possibleMatchLists = []
-    for solutionWord in wordList.words:
+    possibleMatchLists = tuple()
+    for solutionWord in words:
         matches = matchScript(guessWord, solutionWord)
         if list(matches) not in possibleMatchLists:
-            possibleMatchLists.append(matches)
+            possibleMatchLists += (list(matches),)
     return possibleMatchLists
 
 
@@ -58,6 +59,7 @@ def isPossibleWord(testWord, matches, guessWord):
     for x in range(5):
         if matches[x] == 2 and guessWord[x] != testWord[x]:
             return False
+
         if matches[x] == 1:
             if guessWord[x] == testWord[x] or guessWord[x] not in testWord:
                 return False
@@ -66,56 +68,60 @@ def isPossibleWord(testWord, matches, guessWord):
                 for y in range(5):
                     if (matches[y] == 2 or matches[y] == 1) and guessWord[y] == guessWord[x]:
                         numLetterGreen += 1
+
                 if testWord.count(guessWord[x]) < numLetterGreen:
                     return False
+
         if matches[x] == 0:
             numLetterGreenYellow = 0
             for y in range(5):
                 if (matches[y] == 1 or matches[y] == 2) and guessWord[y] == guessWord[x]:
                     numLetterGreenYellow += 1
+
             if testWord.count(guessWord[x]) > numLetterGreenYellow:
                 return False
 
     return True
 
 
-# The way this works it tally's up the words that are still possible with each of the possible matchLists to get an
-# average amount of information provided by the word, taking this we can rank the words based on how many other words
-# they cut out.
-def bitCalculator(guessWord):
-    possibleMatchLists = getAllMatchLists(guessWord)
-    averageBits = 0
-    for possibleMatchList in possibleMatchLists:
-        counter = 0
-        for solutionWord in wordList.words:
-            # noinspection PyTypeChecker
-            validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
-            if validWord:
-                counter += 1
-        averageBits = averageBits + (
-                (counter / len(wordList.words)) * (math.log((len(wordList.words) / counter), 2)))
-        # Formula for this part above is Sum of ( x / total * log2(total/x)
-    return (averageBits)
 
 
 # Generates the progress bar to keep track of the 6h long program.
-averageBitsList = []
+averageBitsList = np.empty([])
 
+# The way this works it tally's up the words that are still possible with each of the possible matchLists to get an
+# average amount of information provided by the word, taking this we can rank the words based on how many other words
+# they cut out.
 def functionThing():
-    for guessWord in wordList.words:
-        average = bitCalculator(guessWord)
-        print("Current guessWord: {}  Average Bits word provides: {}".format(guessWord, average))
-        averageBitsList.append(average)
+    for guessWord in words:
+        possibleMatchLists = getAllMatchLists(guessWord)
+        averageBits = 0
+        for possibleMatchList in possibleMatchLists:
+            counter = 0
+            for solutionWord in words:
+                # noinspection PyTypeChecker
+                validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
+                if validWord:
+                    counter += 1
+            averageBits = averageBits + (
+                    (counter / 12972) * (math.log((12972 / counter), 2)))
+            # Formula for this part above is Sum of ( x / total * log2(total/x)
+        print("Current guessWord: {}  Average Bits word provides: {}".format(guessWord, averageBits))
+        np.append(averageBitsList, averageBits)
         yield
 
 
-with alive_bar(len(wordList.words), force_tty=True) as bar:
+with alive_bar(12972, force_tty=True) as bar:
     for i in functionThing():
         bar()
 
+
 # Creates a dataframe with a column of words and the corresponding number of bits of information they remove on average.
-dataFrame = pd.DataFrame({'WordList': wordList.words,
+dataFrame = pd.DataFrame({'WordList': words,
                           'AverageBitsFromWord': averageBitsList})
+
+# Writes that dataframe to a CSV file for later use
+
 
 # Writes that dataframe to a CSV file for later use
 dataFrame.to_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\averageWordScores.csv')
@@ -124,3 +130,4 @@ pd.set_option('expand_frame_repr', False)
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     print(dataFrame.sort_values(by=['NumberOfPossibleWords']))
+
