@@ -5,8 +5,8 @@
 # position one.
 
 import pandas as pd
-from finishedUsefullFunctions import getAllMatchLists
-from finishedUsefullFunctions import isPossibleWord
+from finishedUsefullFunctionsV2 import getAllMatchLists
+from finishedUsefullFunctionsV2 import isPossibleWord
 import math
 from alive_progress import alive_bar
 import collections

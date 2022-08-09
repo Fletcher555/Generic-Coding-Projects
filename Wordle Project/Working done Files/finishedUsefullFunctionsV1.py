@@ -1,39 +1,13 @@
-# Information bit calculator, this will calculate the # of words eliminated by having each different letter state
-# (gray, yellow, and green) in each of the different positions, using this we can then get the percentage of words
-# that this removes. Converting this into bits we can then rank every single combination based on its amount of
-# information, then by taking the odds of getting different letter states in each position i.e. odds of a gray 'p' in
-# position one.
-#
-#
-# After writing the code to do the above it will take aproximately 6 hours to run so in the meantime I am going to
-# try to learn how to get this work with multithreading. 0.4 operations per second
-#
-# This is currently v2 which does the same process nearly twice as fast due to a bunch of optimizations. 0.8 operations
-# per second.
-#
-# This is now v3 which fixed a major bug with the isPossible function that caused words with 2 of the same letters
-# to overestimate the number of possible words. This version now also only checks against the solution words instead
-# of all words as it nearly 10x's the speed. I also fixed an issue with the dataframes that prevented data from being
-# written to the CSV file. 7.8 operations per second.
+# This is just a list of individual functions that I can call from other files if needed.
+# Currently, I believe these functions are mainly used in tkinterWordleClonePolishedV2 and AverageWordleSolverScoreV1
 
-import pandas as pd
-import math
-from alive_progress import alive_bar
 import numpy as np
-
-# These vars contain the list of all the words that are checked, this list is approximately 13000 words long. The list
-# of the solution words contains roughly 3000 words which are the possible solutions, the solutions are all contained
-# in the overall word list.
-wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
-solutionWords = solutionWordList.words.to_numpy()
-words = wordList.words.to_numpy()
+import math
+import pandas as pd
 
 
-# This function finds all possible matchLists possible for the guessWord, it does this by iterating through the entire
-# wordlist and finding all unique matchLists.
-def getAllMatchLists(guessWord):
+# must input a list of all solution words to find lists against
+def getAllMatchLists(guessWord, solutionWords):
     possibleMatchLists = tuple()
     for solutionWord in solutionWords:
         matches = matchScript(guessWord, solutionWord)
@@ -95,37 +69,45 @@ def isPossibleWord(testWord, matches, guessWord):
 
 # This tallies up the words that are still possible with each of the possible matchLists to get an average amount of
 # information provided by the word, taking this we can rank the words based on how many other words they cut out.
-averageBitsList = []
-
-
-def functionThing():
-    for guessWord in words:
-        possibleMatchLists = getAllMatchLists(guessWord)
+# Needs a list of the words that you want to test as well as a list of all solution words
+def bestWordFinder(matchList=None, guessList=None):
+    wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+    words = wordList.words.to_numpy()
+    solutionWordList = pd.read_csv(
+        r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+    solutionWords = solutionWordList.words.to_numpy()
+    if matchList is not None and guessList is not None:
+        solutionWords = set()
+        for x in range(len(matchList)):
+            solutionWordsTemp = set()
+            for testWord in words:
+                if isPossibleWord(testWord, matchList[x], guessList[x]):
+                    solutionWordsTemp.add(testWord)
+            if len(solutionWords) == 0:
+                solutionWords = solutionWordsTemp
+            else:
+                solutionWords = solutionWords & solutionWordsTemp
+    solutionWords = list(solutionWords)
+    averageBitsList = []
+    for possibleWord in words:
+        possibleMatchLists = getAllMatchLists(possibleWord, solutionWords)
         averageBits = 0
         for possibleMatchList in possibleMatchLists:
             counter = 0
             for solutionWord in solutionWords:
                 # noinspection PyTypeChecker
-                validWord = isPossibleWord(solutionWord, possibleMatchList, guessWord)
+                validWord = isPossibleWord(solutionWord, possibleMatchList, possibleWord)
                 if validWord:
                     counter += 1
             averageBits = averageBits + (
                     (counter / len(solutionWords)) * (math.log((len(solutionWords) / counter), 2)))
             # Formula for this part above is Sum of ( x / total * log2(total/x)
-        print("Current guessWord: {}  Average Bits word provides: {}".format(guessWord, averageBits))
+        #print("Current guessWord: {}  Average Bits word provides: {}".format(possibleWord, averageBits))
         averageBitsList.append(averageBits)
-        yield
-
-
-# Generates the progress bar.
-with alive_bar(12972, force_tty=True) as bar:
-    for i in functionThing():
-        bar()
-
-# Writes that dataframe to a CSV file for later use
-dataFrame = pd.DataFrame({'WordList': words, 'AverageBitsFromWord': averageBitsList})
-dataFrame.to_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\averageWordScores.csv')
-pd.set_option('expand_frame_repr', False)
-
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(dataFrame.sort_values(by=['AverageBitsFromWord']))
+    dataFrame = pd.DataFrame({'WordList': words, 'AverageBitsFromWord': averageBitsList})
+    worstThreeWords = dataFrame[dataFrame['AverageBitsFromWord'] != 0].nsmallest(3, 'AverageBitsFromWord').WordList.to_list()
+    topThreeWords = dataFrame.nlargest(3, 'AverageBitsFromWord').WordList.to_list()
+    if len(solutionWords) <= 3:
+        topThreeWords = solutionWords
+    # print("Top 3 Words: {} Worst 3 Words: {}".format(topThreeWords, worstThreeWords))
+    return topThreeWords, worstThreeWords

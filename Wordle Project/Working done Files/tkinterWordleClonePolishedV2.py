@@ -2,16 +2,17 @@
 # demonstrations of my future solvers.
 # Author: Fletcher Dares
 # Email: fletcher.dares@gmail.com
+#
+# This is an unfinished v2 that is not complete, this was an attempt at integrating the hints for the best and worst
+# words however this is not a great implementation as the program freezes while it attempts to calculate those words
+# the issue with this is that it can take upwards of several minutes.
 
 import tkinter as tk
 from tkinter import *
 import pandas as pd
-import numpy as np
+from finishedUsefullFunctionsV1 import matchScript
+from finishedUsefullFunctionsV1 import bestWordFinder
 import random
-
-# These vars are used later and just need to be declared as empty global lists.
-guessList = []
-matchList = []
 
 # Initializes the tkinter tab with a canvas.
 root = tk.Tk()
@@ -20,28 +21,19 @@ root.configure(background='Black')
 root.geometry('500x500')
 canvas = tk.Canvas(root, width=500, height=500, borderwidth=0, highlightthickness=0)
 
-# These pull lists of words that I have stored in the accompanying CSV's also selects the solution word.
-wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
-solutionWord = solutionWordList.words[random.randint(0, len(solutionWordList.words))]
-
 # Just defines some colors, these are the official colors Wordle uses
 green = '#6aaa64'
 yellow = '#c9b458'
 gray = '#787c7e'
+white = '#ffffff'
 
 
 # Quick Function that finds the average Score from the csv
 def averageScoreFinder():
-    scoreList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv',
+    scoreList = pd.read_csv(r'C:\Use'
+                            r'rs\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\AverageScore.csv',
                             header=None)
-    scoreTotal = 0
-    for x in scoreList.iloc[0]:
-        scoreTotal = scoreTotal + x
-
-    averageScore = round((scoreTotal / len(scoreList.iloc[0])), 2)
-    canvas.itemconfig(averageScoreText, text=averageScore)
+    canvas.itemconfig(averageScoreText, text=round(sum(list(scoreList.iloc[0])) / len(scoreList.iloc[0]), 2))
 
 
 # This function is responsible for creating the squares in the grid, the way these are created depends on older guesses
@@ -52,20 +44,21 @@ def drawSquares(guesses=None, matches=None):
         guesses = []
     if matches is None:
         matches = []
+
     for i in range(len(guesses)):
         for j in range(5):
             x1 = j * 60
             y1 = i * 60
             x2 = x1 + 60
             y2 = y1 + 60
-            if matches[(i * 5) + j] == 0:
+            if matches[i][j] == 0:
                 color = gray
-            elif matches[(i * 5) + j] == 1:
+            elif matches[i][j] == 1:
                 color = yellow
             else:
                 color = green
             canvas.create_rectangle(x1, y1, x2, y2, fill=color, tags="rect", outline='black', )
-            canvas.create_text(((x1 + 30), (y1 + 30)), text=guesses[i][j], font='Helvetica 12 bold')
+            canvas.create_text(((x1 + 30), (y1 + 30)), text=guesses[i][j].upper(), font='Helvetica 12 bold', fill=white)
 
     # Second part draws the black squares.
     for i in range(6 - len(guesses)):
@@ -78,6 +71,7 @@ def drawSquares(guesses=None, matches=None):
 
 
 # This sets the state of the solution button to a default hidden
+
 buttonState = True
 
 
@@ -113,37 +107,13 @@ def playAgain():
     global matchList
     matchList = []
     drawSquares()
+    global currentGuess
+    currentGuess = 0
+    global showHint
+    showHint = False
     buttonPress(solutionWord)
     global gameOver
     gameOver = False
-
-
-# This is the function that returns the match lists.
-def matchScript(guessWord, Solution):
-    guessWordLetterCount = {}
-    # Creates a dict with each letter in the guessWord.
-    for letter in guessWord:
-        guessWordLetterCount[letter] = 0
-    matches = np.empty(5, dtype=object)
-
-    # First we do the easy part of finding the green letters.
-    for x in range(len(guessWord)):
-        if guessWord[x] == Solution[x]:
-            matches[x] = 2
-            guessWordLetterCount[guessWord[x]] += 1
-
-    # Uses the dict that was created earlier to solve the yellows.
-    for x in range(len(guessWord)):
-        if matches[x] != 2:
-            if guessWord[x] in Solution:
-                if guessWordLetterCount[guessWord[x]] < Solution.count(guessWord[x]):
-                    matches[x] = 1
-                    guessWordLetterCount[guessWord[x]] += 1
-    # Sets all the not already set to gray.
-    for x in range(len(guessWord)):
-        if matches[x] != 2 and matches[x] != 1:
-            matches[x] = 0
-    return matches
 
 
 # This is what takes the word from the selection box, runs checks and passes it to the file that checks the matches.
@@ -164,7 +134,6 @@ def wordGuesser():
         else:
             var = True
             guessButton.config(background='red')
-            print("h")
             guessButton.after(500, lambda: guessButton.config(background='white'))
 
         # If the loop was broken the checker code runs.
@@ -183,10 +152,81 @@ def wordGuesser():
                 endButton.place(x=50, y=250)
 
             # This reformats the way that we write the list before sending it to redraw the grid of squares
-            for x in matches:
-                matchList.append(x)
-            print("matches: {}  MatchList: {}".format(matches, matchList))
+            global matchList
+            matchList += (list(matches),)
+
             drawSquares(guessList, matchList)
+            global currentGuess
+            currentGuess += 1
+            global showHint
+            showHint = False
+            topThreeWords()
+
+
+currentGuess = 0
+showHint = False
+
+
+def topThreeWords():
+    global currentGuess
+    global showHint
+    global guessList
+    global matchList
+    if currentGuess != 0 and showHint:
+        print(matchList)
+        print(guessList)
+
+        var = bestWordFinder(matchList, guessList)
+
+        print("Done")
+        topThreeWordsList = var[0]
+        while len(topThreeWordsList) < 3:
+            topThreeWordsList.append(var[0][0])
+
+        worstThreeWordsList = var[1]
+        if not var[1]:
+            worstThreeWordsList = ['kudos', 'kudos', 'kudos']
+        while len(topThreeWordsList) < 3:
+            worstThreeWordsList.append(var[1][1])
+
+    else:
+        topThreeWordsList = ['soare', 'roate', 'raise']
+        worstThreeWordsList = ['qajaq', 'jujus', 'immix']
+
+    if showHint:
+        hintButton.config(text='Hide Hints:')
+        hintButton.place(x=350, y=200)
+        # Top Words
+        canvas.create_rectangle(365, 265, 435, 285, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 275, fill=green, font='Helvetica 12 bold', text=topThreeWordsList[0].upper())
+        canvas.create_rectangle(365, 290, 435, 310, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 300, fill=green, font='Helvetica 12 bold', text=topThreeWordsList[1].upper())
+        canvas.create_rectangle(365, 315, 435, 335, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 325, fill=green, font='Helvetica 12 bold', text=topThreeWordsList[2].upper())
+
+        # Worst Words
+        canvas.create_rectangle(365, 365, 435, 385, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 375, fill=green, font='Helvetica 12 bold', text=worstThreeWordsList[0].upper())
+        canvas.create_rectangle(365, 390, 435, 410, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 400, fill=green, font='Helvetica 12 bold', text=worstThreeWordsList[1].upper())
+        canvas.create_rectangle(365, 415, 435, 435, fill='#E1E1E1', outline='black')
+        canvas.create_text(400, 425, fill=green, font='Helvetica 12 bold', text=worstThreeWordsList[2].upper())
+
+        showHint = False
+    elif not showHint:
+        hintButton.config(text='Reveal Hints:')
+        hintButton.place(x=340, y=200)
+        # Top Words
+        canvas.create_rectangle(365, 265, 435, 285, fill='#737373', outline='black')
+        canvas.create_rectangle(365, 290, 435, 310, fill='#737373', outline='black')
+        canvas.create_rectangle(365, 315, 435, 335, fill='#737373', outline='black')
+
+        # Worst Words
+        canvas.create_rectangle(365, 365, 435, 385, fill='#737373', outline='black')
+        canvas.create_rectangle(365, 390, 435, 410, fill='#737373', outline='black')
+        canvas.create_rectangle(365, 415, 435, 435, fill='#737373', outline='black')
+
+        showHint = True
 
 
 # This is where the initial defining of the all Canvas objects must happen.
@@ -205,7 +245,22 @@ solutionButton = Button(canvas, text='Reveal:', command=lambda: buttonPress(solu
 solutionButton.place(x=310, y=65)
 averageScoreText = canvas.create_text(400, 175, fill='black', font='Helvetica 12 bold')
 
+hintButton = Button(canvas, text='Reveal Hints:', command=lambda: topThreeWords(), font='Helvetica 12 bold',
+                    fg='black', highlightcolor='black', highlightthickness=0)
+hintButton.place(x=340, y=200)
+topThreeWordsText = canvas.create_text(400, 250, fill='black', font='Helvetica 12 bold', text='Top 3 Words:')
+worstThreeWordsText = canvas.create_text(400, 350, fill='black', font='Helvetica 12 bold', text='Worst 3 Words:')
+
+# These pull lists of words that I have stored in the accompanying CSV's also selects the solution word.
+wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+solutionWordList = pd.read_csv(
+    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+solutionWord = solutionWordList.words[random.randint(0, len(solutionWordList.words))]
+guessList = []
+matchList = tuple()
+
 # Runs these functions so they can set their values.
+topThreeWords()
 buttonPress(solutionWord)
 drawSquares()
 averageScoreFinder()
