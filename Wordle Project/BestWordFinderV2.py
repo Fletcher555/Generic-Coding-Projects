@@ -16,8 +16,9 @@ from alive_progress import alive_bar
 import numpy as np
 
 wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+solutionWordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+solutionWords = solutionWordList.words.to_numpy()
 words = wordList.words.to_numpy()
-averageBitsList = []
 
 
 # These vars contain the list of all the words that are checked, this list is approximately 13000 words long.
@@ -46,7 +47,8 @@ def matchScript(guessWord, solutionWord):
             guessWordLetterCount[guessWord[x]] += 1
 
     for x in range(5):
-        if matchList[x] != 2 and guessWord[x] in solutionWord and guessWordLetterCount[guessWord[x]] < solutionWord.count(guessWord[x]):
+        if matchList[x] != 2 and guessWord[x] in solutionWord and guessWordLetterCount[
+           guessWord[x]] < solutionWord.count(guessWord[x]):
             matchList[x] = 1
             guessWordLetterCount[guessWord[x]] += 1
     matchList = [0 if v is None else v for v in matchList]
@@ -84,12 +86,12 @@ def isPossibleWord(testWord, matches, guessWord):
     return True
 
 
-
-
 # Generates the progress bar to keep track of the 6h long program.
+
 averageBitsList = np.empty([])
 
-# The way this works it tally's up the words that are still possible with each of the possible matchLists to get an
+
+# The way this works it tally up the words that are still possible with each of the possible matchLists to get an
 # average amount of information provided by the word, taking this we can rank the words based on how many other words
 # they cut out.
 def functionThing():
@@ -115,7 +117,6 @@ with alive_bar(12972, force_tty=True) as bar:
     for i in functionThing():
         bar()
 
-
 # Creates a dataframe with a column of words and the corresponding number of bits of information they remove on average.
 dataFrame = pd.DataFrame({'WordList': words,
                           'AverageBitsFromWord': averageBitsList})
@@ -130,4 +131,3 @@ pd.set_option('expand_frame_repr', False)
 
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     print(dataFrame.sort_values(by=['NumberOfPossibleWords']))
-
