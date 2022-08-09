@@ -17,19 +17,3 @@ from alive_progress import alive_bar
 import numpy as np
 import itertools
 
-words = [0, 1, 2]
-averageBitsList = [0, 2, 2]
-
-dataFrame = pd.DataFrame({'WordList': words,
-                          'AverageBitsFromWord': averageBitsList})
-
-# Writes that dataframe to a CSV file for later use
-
-
-# Writes that dataframe to a CSV file for later use
-dataFrame.to_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\averageWordScores.csv')
-
-pd.set_option('expand_frame_repr', False)
-
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(dataFrame.sort_values(by=['AverageBitsFromWord']))
