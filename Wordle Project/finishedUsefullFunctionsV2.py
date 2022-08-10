@@ -69,12 +69,7 @@ def isPossibleWord(testWord, matches, guessWord):
 # This tallies up the words that are still possible with each of the possible matchLists to get an average amount of
 # information provided by the word, taking this we can rank the words based on how many other words they cut out.
 # Needs a list of the words that you want to test as well as a list of all solution words
-def bestWordFinder(matchList=None, guessList=None):
-    wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
-    words = wordList.words.to_numpy()
-    solutionWordList = pd.read_csv(
-        r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
-    solutionWords = solutionWordList.words.to_numpy()
+def bestWordFinder(words, solutionWords, matchList=None, guessList=None,):
     if matchList is not None and guessList is not None:
         solutionWords = set()
         for x in range(len(matchList)):
@@ -101,7 +96,6 @@ def bestWordFinder(matchList=None, guessList=None):
             averageBits = averageBits + (
                     (counter / len(solutionWords)) * (math.log((len(solutionWords) / counter), 2)))
             # Formula for this part above is Sum of ( x / total * log2(total/x)
-        #print("Current guessWord: {}  Average Bits word provides: {}".format(possibleWord, averageBits))
         averageBitsList.append(averageBits)
     dataFrame = pd.DataFrame({'WordList': words, 'AverageBitsFromWord': averageBitsList})
     worstThreeWords = dataFrame[dataFrame['AverageBitsFromWord'] != 0].nsmallest(3, 'AverageBitsFromWord').WordList.to_list()
@@ -109,4 +103,4 @@ def bestWordFinder(matchList=None, guessList=None):
     if len(solutionWords) <= 3:
         topThreeWords = solutionWords
     # print("Top 3 Words: {} Worst 3 Words: {}".format(topThreeWords, worstThreeWords))
-    return topThreeWords, worstThreeWords
+    return topThreeWords, worstThreeWords, solutionWords

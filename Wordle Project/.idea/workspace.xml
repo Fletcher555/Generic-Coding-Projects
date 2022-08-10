@@ -3,13 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AverageScore.csv" beforeDir="false" afterPath="$PROJECT_DIR$/AverageScore.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test.py" beforeDir="false" afterPath="$PROJECT_DIR$/Test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Working done Files/BestWordv3withsolutionWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/Working done Files/BestWordv3withsolutionWord.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/averageWordScores.csv" beforeDir="false" afterPath="$PROJECT_DIR$/averageWordScores.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/finishedUsefullFunctions.py" beforeDir="false" afterPath="$PROJECT_DIR$/finishedUsefullFunctions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/finishedUsefullFunctionsV2.py" beforeDir="false" afterPath="$PROJECT_DIR$/finishedUsefullFunctionsV2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tkinterWordleClonePolishedv2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tkinterWordleClonePolishedv2.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +45,7 @@
       <recent name="C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tkinterWordleClonePolishedV2">
+  <component name="RunManager" selected="Python.main">
     <configuration name="AverageWordleSolverScoreV1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Wordle Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -178,9 +174,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Test" />
         <item itemvalue="Python.tkinterWordleClonePolishedV2" />
         <item itemvalue="Python.AverageWordleSolverScoreV1" />
-        <item itemvalue="Python.Test" />
         <item itemvalue="Python.BestWordv3withsolutionWord" />
         <item itemvalue="Python.Test 2" />
       </list>
@@ -196,5 +192,16 @@
       <updated>1659538597583</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
