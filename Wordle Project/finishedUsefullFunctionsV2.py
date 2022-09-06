@@ -69,12 +69,12 @@ def isPossibleWord(testWord, matches, guessWord):
 # This tallies up the words that are still possible with each of the possible matchLists to get an average amount of
 # information provided by the word, taking this we can rank the words based on how many other words they cut out.
 # Needs a list of the words that you want to test as well as a list of all solution words
-def bestWordFinder(words, solutionWords, matchList=None, guessList=None,):
+def bestWordFinder(words, solutionWordList, matchList=None, guessList=None,):
     if matchList is not None and guessList is not None:
         solutionWords = set()
         for x in range(len(matchList)):
             solutionWordsTemp = set()
-            for testWord in words:
+            for testWord in solutionWordList:
                 if isPossibleWord(testWord, matchList[x], guessList[x]):
                     solutionWordsTemp.add(testWord)
             if len(solutionWords) == 0:
@@ -82,6 +82,7 @@ def bestWordFinder(words, solutionWords, matchList=None, guessList=None,):
             else:
                 solutionWords = solutionWords & solutionWordsTemp
     solutionWords = list(solutionWords)
+    print(solutionWords)
     averageBitsList = []
     for possibleWord in words:
         possibleMatchLists = getAllMatchLists(possibleWord, solutionWords)
