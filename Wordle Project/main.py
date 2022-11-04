@@ -10,8 +10,8 @@ averageWordScore = pd.read_csv(
 solutionWordList = pd.read_csv(
     r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
 
-matchList = ([0, 2, 0, 0, 1], [0, 1, 0, 1, 0], [1, 0, 2, 2, 1])
-guessLists = ('soare', 'meynt', 'navew',)
+matchList = ([0, 0, 1, 0, 0], [0, 1, 0, 0, 2],)
+guessLists = ('soare', 'clint',)
 
 start = timer()
 solutionWordList = solutionWordList.words
