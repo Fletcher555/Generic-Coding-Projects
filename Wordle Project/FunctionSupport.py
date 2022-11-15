@@ -82,7 +82,7 @@ def bestWordFinder(words, solutionWordList, matchList=None, guessList=None,):
             else:
                 solutionWords = solutionWords & solutionWordsTemp
     solutionWords = list(solutionWords)
-    print(solutionWords)
+
     averageBitsList = []
     for possibleWord in words:
         possibleMatchLists = getAllMatchLists(possibleWord, solutionWords)
