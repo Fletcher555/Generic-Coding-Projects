@@ -1,10 +1,10 @@
 import pandas as pd
 from FunctionSupport import bestWordFinder
 
-wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+wordList = pd.read_csv(r'wordleWordList.csv')
 wordList = wordList.words.to_numpy()
 solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+    r'wordleSolutionList.csv')
 solutionWordList = solutionWordList.words
 
 print("\nThis is a bot that solves Wordle, please be patient as it may take some time for the first few guesses. \n\n")

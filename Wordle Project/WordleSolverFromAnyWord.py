@@ -4,10 +4,10 @@
 import pandas as pd
 from FunctionSupport import bestWordFinder
 
-wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+wordList = pd.read_csv(r'wordleWordList.csv')
 words = wordList.words.to_numpy()
 solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+    r'wordleSolutionList.csv')
 
 matchList = ([0, 0, 0, 0, 1], [0, 2, 1, 0, 0], [0, 1, 0, 2, 2])
 guessLists = ('soare', 'denet', 'abrin',)

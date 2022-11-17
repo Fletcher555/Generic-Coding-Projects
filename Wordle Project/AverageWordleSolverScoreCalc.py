@@ -11,11 +11,11 @@
 
 import pandas as pd
 from alive_progress import alive_bar
-from finishedUsefullFunctionsV1 import bestWordFinder
-from finishedUsefullFunctionsV1 import matchScript
+from FunctionSupport import bestWordFinder
+from FunctionSupport import matchScript
 
 solutionWordList = pd.read_csv(
-    r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+    r'wordleSolutionList.csv')
 
 scoreList = []
 

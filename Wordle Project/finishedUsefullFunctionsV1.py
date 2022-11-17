@@ -71,10 +71,10 @@ def isPossibleWord(testWord, matches, guessWord):
 # information provided by the word, taking this we can rank the words based on how many other words they cut out.
 # Needs a list of the words that you want to test as well as a list of all solution words
 def bestWordFinder(matchList=None, guessList=None):
-    wordList = pd.read_csv(r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleWordList.csv')
+    wordList = pd.read_csv(r'wordleWordList.csv')
     words = wordList.words.to_numpy()
     solutionWordList = pd.read_csv(
-        r'C:\Users\fletc\Documents\GitHub\Generic-Coding-Projects\Wordle Project\wordleSolutionList.csv')
+        r'wordleSolutionList.csv')
     solutionWords = solutionWordList.words.to_numpy()
     if matchList is not None and guessList is not None:
         solutionWords = set()
