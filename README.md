@@ -13,5 +13,7 @@ AverageWordleSolverScoreCalc/ this file could technically calculate the average 
 FunctionSupport/ the 4 key functions that actually solve Wordle are contained here, these are complicated and are semi-explained in the commenting.
 
 WordleSolverFromAnyWord/ is a file that can solve Wordle from any word the reason the main solver doesnt use this is because it is incredibly slow.
+
+finishedUsefullFunctionsV1/ A depreciated version of FunctionSupport that is required to run Wordle Clone.
   
 The CSV files are general support for the project and include the Word lists among others, many programs will not run without these.
