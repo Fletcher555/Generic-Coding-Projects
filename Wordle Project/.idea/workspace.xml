@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AverageWordleSolverScoreCalc.py" beforeDir="false" afterPath="$PROJECT_DIR$/AverageWordleSolverScoreCalc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordleClone.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordleClone.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordleSolver.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordleSolver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WordleSolverFromAnyWord.py" beforeDir="false" afterPath="$PROJECT_DIR$/WordleSolverFromAnyWord.py" afterDir="false" />
-    </list>
+    <list default="true" id="ed68b575-0298-4a55-9d22-adcc5a5832be" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
